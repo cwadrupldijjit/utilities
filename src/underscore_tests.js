@@ -186,11 +186,41 @@ var _ = { };
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
+    var isTrue = true;
+    
+    if (typeof iterator !== "undefined") {
+      for (var i = 0; i < collection.length; i++) {
+        if (!iterator(collection[i])) {
+          isTrue = false;
+        }
+      }
+    }
+    
+    return isTrue;
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
+    var isTrue = false;
+    console.log("collection", collection);
+    console.log("iterator", iterator);
+    
+    if (typeof iterator === "undefined") {
+      iterator = function(x) {
+        if (x) {
+          return true;
+        } else return false;
+      };
+    }
+    
+    for (var i = 0; i < collection.length; i++) {
+      if (iterator(collection[i])) {
+        isTrue = true;
+      }
+    }
+    
+    return isTrue;
   };
 
 

@@ -203,8 +203,6 @@ var _ = { };
   // provided, provide a default one
   _.some = function(collection, iterator) {
     var isTrue = false;
-    console.log("collection", collection);
-    console.log("iterator", iterator);
     
     if (typeof iterator === "undefined") {
       iterator = function(x) {

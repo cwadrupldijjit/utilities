@@ -135,10 +135,8 @@ var _ = { };
   // Calls the method named by methodName on each value in the list.
   _.invoke = function(list, methodName, args) {
     var results = [];
-    // console.log(list[methodName]);
     
     for (var i = 0; i < list.length; i++) {
-      // console.log(methodName);
       if ((typeof methodName).toLowerCase() === "string") {
         args = list[i][methodName];
         results.push(args.apply(list[i]));
@@ -147,7 +145,6 @@ var _ = { };
       }
     }
     
-    // console.log(results[methodName]);
     return results;
   };
 
@@ -155,15 +152,35 @@ var _ = { };
   // iterator(previousValue, item) for each item. previousValue should be
   // the return value of the previous iterator call.
   _.reduce = function(collection, iterator, initialValue) {
-    var previousValue = initialValue;
+    var previousValue = initialValue || 0;
+    // console.log(previousValue);
     
     for (var i = 0; i < collection.length; i++) {
-      previousValue = iterator(previousValue, collection[i])
+      previousValue = iterator(previousValue, collection[i]);
     }
+    
+    return previousValue;
   };
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
+    var isFound = false;
+    
+    if ((typeof collection).toLowerCase() === "object"){
+      for (var key in collection) {
+        if (collection[key] === target) {
+          isFound = true;
+        }
+      }
+    } else if ((typeof collection).toLowerCase() === "array") {
+      for (var i = 0; i < collection.length; i++) {
+        if (collection[i] === target) {
+          isFound = true;
+        }
+      }
+    }
+    
+    return isFound;
   };
 
 

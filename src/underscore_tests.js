@@ -55,7 +55,6 @@ var _ = { };
   // is not present in the array.
   _.indexOf = function(array, target){
     var isFound = -1;
-    console.log(array);
     
     for (var i = 0; i < array.length; i++) {
       if (array[i] === target) {
@@ -69,10 +68,24 @@ var _ = { };
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, iterator) {
+    var collect = [];
+    for (var i = 0; i < collection.length; i++) {
+      if (iterator(collection[i])) {
+        collect.push(collection[i]);
+      }
+    }
+    return collect;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, iterator) {
+    var collect = [];
+    for (var i = 0; i < collection.length; i++) {
+      if (!iterator(collection[i])) {
+        collect.push(collection[i]);
+      }
+    }
+    return collect;
   };
 
   // Produce a duplicate-free version of the array.

@@ -90,11 +90,34 @@ var _ = { };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var unique = [];
+    
+    function isFound(query) {
+      var found = false;
+      for (var j = 0; j < unique.length; j++) {
+        if (unique[j] === query) {
+          found = true;
+        }
+      }
+      return found;
+    }
+    for (var i = 0; i < array.length; i++) {
+      if (!isFound(array[i])) {
+        unique.push(array[i]);
+      }
+    }
+    return unique;
   };
 
 
   // Return the results of applying an iterator to each element.
   _.map = function(array, iterator) {
+    var results = [];
+    console.log(iterator);
+    for (var i = 0; i < array.length; i++) {
+      results.push(iterator(array[i]));
+    }
+    return results;
   };
 
   // Takes an array of objects and returns and array of the values of

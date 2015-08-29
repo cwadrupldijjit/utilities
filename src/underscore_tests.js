@@ -232,11 +232,51 @@ var _ = { };
   // Extend a given object with all the properties of the passed in
   // object(s).
   _.extend = function(obj) {
+    for (var i = 1; i < arguments.length; i++) {
+      for (var key1 in arguments[i]) {
+        // var isFound = false;
+        // console.log("other obj", key1);
+        
+        // for (var key2 in obj) {
+        //   console.log("obj", key2);
+        //   if (key1 === key2) {
+        //     // console.log("found");
+        //     isFound = true;
+        //   }
+        // }
+        
+        obj[key1] = arguments[i][key1];
+        // if (!isFound) {
+        // }
+      }
+    }
+    
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    for (var i = 1; i < arguments.length; i++) {
+      for (var key1 in arguments[i]) {
+        var isFound = false;
+        // console.log("other obj", key1);
+        
+        for (var key2 in obj) {
+          // console.log("obj", key2);
+          if (key1 === key2) {
+            // console.log("found");
+            isFound = true;
+          }
+        }
+        
+        if (!isFound) {
+        obj[key1] = arguments[i][key1];
+        }
+      }
+    }
+    
+    return obj;
   };
 
 

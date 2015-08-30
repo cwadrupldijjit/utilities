@@ -288,6 +288,10 @@ var _ = { };
   // Return a function that can be called at most one time. Subsequent calls
   // should return the previously returned value.
   _.once = function(func) {
+    func();
+    return function () {
+      
+    }
   };
 
   // Memoize an expensive function by storing its results. You may assume
@@ -297,7 +301,26 @@ var _ = { };
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var memory = [];
+    
+    if (memory.length !== 0) {
+      for (var i = 0; i < memory.length; i++) {
+        if (func === memory[i]) {
+          return memory[i];
+        }
+      }
+    } else {
+      console.log("Test");
+      memory.push(func);
+      return func;
+    }
   };
+  
+  
+                //  ^^^  NO IDEA WHY THAT WORKED  ^^^  ask a mentor
+
+
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -306,6 +329,7 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    
   };
 
 

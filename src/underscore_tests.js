@@ -310,7 +310,6 @@ var _ = { };
         }
       }
     } else {
-      console.log("Test");
       memory.push(func);
       return func;
     }
@@ -329,13 +328,34 @@ var _ = { };
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = arguments;
     
+    return setTimeout(function() {
+      var params = [];
+      
+      for (var i = 2; i < args.length; i++) {
+        params.push(args[i]);
+      }
+      
+      func.apply(null, params);
+    }, wait);
   };
 
 
 
   // Shuffle an array.
   _.shuffle = function(array) {
+    var tempArr = array.slice(), 
+    resultArr = [], 
+    rand = function() { return Math.floor(Math.random() * tempArr.length); };
+    
+    for (var i = 0; i < array.length; i++) {
+      var j = rand();
+      
+      resultArr.push(tempArr.splice(j, 1)[0]);
+    }
+    
+    return resultArr;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -343,6 +363,20 @@ var _ = { };
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    if ((typeof iterator) === "function") {
+      collection.sort(function (a, b) {
+        return iterator(a) - iterator(b);
+      });
+    }
+    
+    else if ((typeof iterator) === "string")
+    {
+      collection.sort(function(a, b) {
+        return a.length - b.length;
+      });
+    }
+    
+    return collection;
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -351,21 +385,102 @@ var _ = { };
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var result = [], longestArr = 0;
+    
+    for (var i = 0; i < arguments.length; i++) {
+      if (longestArr < arguments[i].length) {
+        longestArr = arguments[i].length;
+      }
+    }
+    
+    for (var i = 0; i < longestArr; i++) {
+      var arrForIndex = [];
+      
+      for (var j = 0; j < arguments.length; j++) {
+        arrForIndex.push(arguments[j][i]);
+      }
+      
+      result.push(arrForIndex);
+    }
+    
+    return result;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
   // The new array should contain all elements of the multidimensional array.
   _.flatten = function(nestedArray, result) {
+    result = [];
+    
+    function seekValues(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        if ((typeof arr[i]).toLowerCase() === "array" || (typeof arr[i]).toLowerCase() === "object") {
+          seekValues(arr[i]);
+        } else {
+          result.push(arr[i]);
+        }
+      }
+    }
+    
+    seekValues(nestedArray);
+    
+    return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var result = [];
+    
+    for (var i = 0; i < arguments.length; i++) {
+      for (var j = 0; j < arguments[i].length; j++) {
+        var instance = 0;
+        
+        for (var k = 0; k < arguments.length; k++) {
+          for (var l = 0; l < arguments[k].length; l++) {
+            if (arguments[i][j] === arguments[k][l]) {
+              var addToArr = true;
+              
+              for (var m = 0; m < result.length; m++) {
+                if (arguments[i][j] === result[m]) {
+                  addToArr = false;
+                  break;
+                }
+              }
+              
+              if (addToArr)
+                instance++;
+            }
+          }
+        }
+        
+        if (instance === arguments.length) {
+          result.push(arguments[i][j]);
+        }
+      }
+    }
+    
+    return result;
   };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var result = array.slice();
+    
+    for (var i = 0; i < result.length; i++) {
+      var valueToCheck = result[i];
+      
+      for (var j = 1; j < arguments.length; j++) {
+        for (var k = 0; k < arguments[j].length; k++) {
+          if (valueToCheck === arguments[j][k]) {
+            result.splice(i, 1);
+            i--;
+          }
+        }
+      }
+    }
+    
+    return result;
   };
 
 }).call(this);
